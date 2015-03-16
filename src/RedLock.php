@@ -1,5 +1,5 @@
 <?php
-define('USE_REDIS_CLUSTER', TRUE);
+define('USE_REDIS_CLUSTER', FALSE);
 
 class RedLock
 {
@@ -15,11 +15,16 @@ class RedLock
     function __construct(array $servers, $retryDelay = 200, $retryCount = 3)
     {
         $this->servers = $servers;
-
         $this->retryDelay = $retryDelay;
         $this->retryCount = $retryCount;
 
+if (USE_REDIS_CLUSTER):
+        // Since we only have one cluster, the server count should be 1;
+        // thus quorum should be 1 as well.
+        $this->quorum  = 1;
+else:
         $this->quorum  = min(count($servers), (count($servers) / 2 + 1));
+endif;
     }
 
     public function lock($resource, $ttl)
@@ -86,14 +91,15 @@ class RedLock
     {
         if (empty($this->instances)) {
 if (USE_REDIS_CLUSTER):
+            $nodes = array();
             foreach ($this->servers as $server) {
-                list($host, $port, $timeout) = $server;
-                $redis = new \Redis();
-                $redis->connect($host, $port, $timeout);
-
-                $this->instances[] = $redis;
+                $nodes[] = implode(':', $server);
             }
-
+            $redis = new RedisCluster(
+                'cluster1',
+                array(implode(' ', $nodes))
+            );
+            $this->instances[] = $redis;
 else:
             foreach ($this->servers as $server) {
                 list($host, $port, $timeout) = $server;
