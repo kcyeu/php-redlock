@@ -1,4 +1,5 @@
 <?php
+define('USE_REDIS_CLUSTER', TRUE);
 
 class RedLock
 {
@@ -84,6 +85,7 @@ class RedLock
     private function initInstances()
     {
         if (empty($this->instances)) {
+if (USE_REDIS_CLUSTER):
             foreach ($this->servers as $server) {
                 list($host, $port, $timeout) = $server;
                 $redis = new \Redis();
@@ -91,6 +93,16 @@ class RedLock
 
                 $this->instances[] = $redis;
             }
+
+else:
+            foreach ($this->servers as $server) {
+                list($host, $port, $timeout) = $server;
+                $redis = new \Redis();
+                $redis->connect($host, $port, $timeout);
+
+                $this->instances[] = $redis;
+            }
+endif;
         }
     }
 
