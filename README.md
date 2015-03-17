@@ -4,15 +4,17 @@ Based on [Redlock-rb](https://github.com/antirez/redlock-rb) by [Salvatore Sanfi
 
 This library implements the Redis-based distributed lock manager algorithm [described in this blog post](http://antirez.com/news/77).
 
+Support cluster mode using [phpredis](https://github.com/phpredis/phpredis/tree/feature/redis_cluster_autofailover) PECL extention.
+
 To create a lock manager:
 
 ```php
 
-$servers = [
-    ['127.0.0.1', 6379, 0.01],
-    ['127.0.0.1', 6389, 0.01],
-    ['127.0.0.1', 6399, 0.01],
-];
+$servers = array(
+    array('127.0.0.1', 6379),
+    array('127.0.0.1', 6380),
+    array('127.0.0.1', 6381),
+);
 
 $redLock = new RedLock($servers);
 
