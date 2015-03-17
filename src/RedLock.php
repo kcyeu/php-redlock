@@ -1,5 +1,6 @@
 <?php
-define('USE_REDIS_CLUSTER', FALSE);
+define('USE_REDIS_CLUSTER', TRUE);
+define('CONN_TIMEOUT', 0.01);
 
 class RedLock
 {
@@ -102,10 +103,9 @@ if (USE_REDIS_CLUSTER):
             $this->instances[] = $redis;
 else:
             foreach ($this->servers as $server) {
-                list($host, $port, $timeout) = $server;
+                list($host, $port) = $server;
                 $redis = new \Redis();
-                $redis->connect($host, $port, $timeout);
-
+                $redis->connect($host, $port, CONN_TIMEOUT);
                 $this->instances[] = $redis;
             }
 endif;
