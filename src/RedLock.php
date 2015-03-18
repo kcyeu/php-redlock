@@ -98,7 +98,7 @@ if (USE_REDIS_CLUSTER):
             }
             $redis = new RedisCluster(
                 'cluster1',
-                array(implode(' ', $nodes))
+                $nodes
             );
             $this->instances[] = $redis;
 else:
