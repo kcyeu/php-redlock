@@ -13,10 +13,9 @@
     },
 
     "autoload": {
-        "psr-0": {
-            "RedLock": ""
+        "psr-4": {
+            "RedLock\\": "src/",
+            "": "src/"
         }
     }
-
-
 }

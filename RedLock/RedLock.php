@@ -1,5 +1,7 @@
 <?php
 
+namespace RedLock;
+
 class RedLock
 {
     const TIMEOUT = 10;
