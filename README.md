@@ -1,7 +1,9 @@
-redlock-php - Redis distributed locks in PHP
+# PHP-Redlock
 
-Based on [Redlock-rb](https://github.com/antirez/redlock-rb) by [Salvatore Sanfilippo](https://github.com/antirez)
+>Redis distributed locks in PHP
 
+Based on [Redlock-rb](https://github.com/antirez/redlock-rb) by [Salvatore Sanfilippo](https://github.com/antirez) and 
+[Redlock-php](https://github.com/ronnylt/redlock-php) by [Ronny López](https://github.com/ronnylt).
 This library implements the Redis-based distributed lock manager algorithm [described in this blog post](http://antirez.com/news/77).
 
 Support cluster mode using [phpredis](https://github.com/phpredis/phpredis/tree/feature/redis_cluster_autofailover) PECL extention.
